@@ -11,8 +11,3 @@ export class UserAlreadyExistsError extends BusinessError {
     super('USER_ALREADY_EXISTS', message);
   }
 }
-export class IncorrectPasswordError extends BusinessError {
-  constructor(message = 'Incorrect password') {
-    super('INCORRECT_PASSWORD', message);
-  }
-}

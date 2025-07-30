@@ -43,3 +43,42 @@ export class CreateUserDto {
   @IsBoolean()
   isActive?: boolean;
 }
+export class GetUserDto {
+  @ApiProperty({ description: 'User ID', example: 1, type: Number })
+  id: number;
+
+  @ApiProperty({
+    description: 'User name',
+    example: 'JhonDoe123',
+    type: String,
+  })
+  name: string;
+
+  @ApiProperty({
+    description: 'User email',
+    example: 'johndoe@example.com',
+    type: String,
+  })
+  email: string;
+
+  @ApiProperty({
+    description: 'Date when the user was created',
+    example: '2024-07-30T12:34:56.789Z',
+    type: Date,
+  })
+  createdAt: Date;
+
+  @ApiProperty({
+    description: 'Date when the user was last updated',
+    example: '2024-07-30T12:34:56.789Z',
+    type: Date,
+  })
+  updatedAt: Date;
+
+  @ApiProperty({
+    description: 'Indicates if the user is active',
+    example: true,
+    type: Boolean,
+  })
+  isActive: boolean;
+}

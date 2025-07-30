@@ -4,11 +4,13 @@ import { UserTypeOrmRepository } from './infraestructure/repositories/user.repos
 import { CreateUserUseCase } from './application/use-cases/create-user.use-case';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserTypeOrmEntity } from './infraestructure/typeorm/user.typeorm.entity';
-import { GenericMapper } from 'src/core/infra/mappers/generic.mapper';
 import { BcryptPasswordHasher } from 'src/core/infra/security/brcypt-password-hasher';
-import { PasswordHasher } from 'src/core/domain/services/password-hasher.interface';
+import { UserMapper } from './infraestructure/mappers/user.mapper';
+import { GetUserByIdUseCase } from './application/use-cases/get-user-by-id.use-case';
+import { AuthModule } from 'src/auth/auth.module';
+
 @Module({
-  imports: [TypeOrmModule.forFeature([UserTypeOrmEntity])],
+  imports: [TypeOrmModule.forFeature([UserTypeOrmEntity]), AuthModule],
   controllers: [UserController],
   providers: [
     UserTypeOrmRepository,
@@ -17,14 +19,12 @@ import { PasswordHasher } from 'src/core/domain/services/password-hasher.interfa
       useClass: UserTypeOrmRepository,
     },
     {
-      provide: GenericMapper,
-      useClass: GenericMapper,
-    },
-    {
       provide: 'PasswordHasher',
       useClass: BcryptPasswordHasher,
     },
     CreateUserUseCase,
+    UserMapper,
+    GetUserByIdUseCase,
   ],
 
   exports: [],

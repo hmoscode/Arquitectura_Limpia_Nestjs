@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BusinessErrorFilter } from './core/filters/business-error.filter';
@@ -17,6 +20,7 @@ async function bootstrap() {
     .setTitle('API Documentación')
     .setDescription('Documentación de la API con Swagger')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);

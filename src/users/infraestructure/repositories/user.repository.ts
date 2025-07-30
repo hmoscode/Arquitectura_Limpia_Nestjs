@@ -3,13 +3,13 @@ import { UserRepository } from 'src/users/domain/repositories/user.repository';
 import { UserTypeOrmEntity } from '../typeorm/user.typeorm.entity';
 import { Not, Repository } from 'typeorm';
 import { User } from 'src/users/domain/entities/user.entity';
-import { GenericMapper } from 'src/core/infra/mappers/generic.mapper';
+import { UserMapper } from '../mappers/user.mapper';
 
 export class UserTypeOrmRepository implements UserRepository {
   constructor(
     @InjectRepository(UserTypeOrmEntity)
     private readonly repository: Repository<UserTypeOrmEntity>,
-    private readonly userMapper: GenericMapper<UserTypeOrmEntity, User>,
+    private readonly userMapper: UserMapper,
   ) {}
 
   async save(user: User): Promise<number> {
@@ -103,5 +103,13 @@ export class UserTypeOrmRepository implements UserRepository {
       },
     });
     return exists;
+  }
+
+  async findByNameOrEmail(nameOrEmail: string): Promise<User | null> {
+    const userTypeOrmEntity = await this.repository.findOne({
+      where: [{ name: nameOrEmail }, { email: nameOrEmail }],
+    });
+    if (!userTypeOrmEntity) return null;
+    return this.userMapper.toDomain(userTypeOrmEntity);
   }
 }

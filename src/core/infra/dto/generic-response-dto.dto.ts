@@ -5,7 +5,7 @@ export class GenericResponseDto {
 
   constructor(props: { id?: number; message?: string; statusCode?: number }) {
     this.id = props.id;
-    this.message = props.message ?? 'Operación exitosa';
+    this.message = props.message ?? 'Operation successful';
     this.statusCode = props.statusCode ?? 200;
   }
 }

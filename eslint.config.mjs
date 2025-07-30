@@ -1,33 +1,72 @@
-// @ts-check
-import eslint from '@eslint/js';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-
-export default tseslint.config(
-  {
-    ignores: ['eslint.config.mjs'],
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
+    sourceType: 'module',
   },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  eslintPluginPrettierRecommended,
-  {
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
+  plugins: ['@typescript-eslint/eslint-plugin'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
+  root: true,
+  env: {
+    node: true,
+    jest: true,
+  },
+  ignorePatterns: ['.eslintrc.js'],
+  rules: {
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'function',
+        format: ['camelCase'],
+        leadingUnderscore: 'allow',
       },
-      sourceType: 'commonjs',
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+      {
+        selector: 'variable',
+        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+        trailingUnderscore: 'allow',
       },
-    },
+      {
+        selector: 'typeLike',
+        format: ['PascalCase'],
+      },
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+      },
+    ],
+    complexity: ['error', 12],
+    'no-console': 'error',
+    'no-var': 'error',
+    'object-shorthand': 'error',
+    'prefer-const': 'error',
+    'prefer-destructuring': [
+      'warn',
+      {
+        VariableDeclarator: {
+          array: false,
+          object: true,
+        },
+        AssignmentExpression: {
+          array: true,
+          object: true,
+        },
+      },
+      {
+        enforceForRenamedProperties: false,
+      },
+    ],
+    'require-await': 'error',
+    'prefer-object-spread': 'error',
   },
-  {
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-floating-promises': 'warn',
-    },
-  },
-);
+};
